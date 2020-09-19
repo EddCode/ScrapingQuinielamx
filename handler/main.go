@@ -11,11 +11,12 @@ import (
 )
 
 func Root(w http.ResponseWriter, request *http.Request) {
-	readWebsite("https://www.mediotiempo.com/futbol/liga-mx/calendario", ".going.teams ")
+	gamesResults()
 	io.WriteString(w, "Web scrapint starting")
 }
 
-func readWebsite(url string, html string) {
+func gamesResults() {
+	url := "https://www.mediotiempo.com/futbol/liga-mx/calendario"
 	fmt.Print(url)
 
 	defer func() {
@@ -31,7 +32,7 @@ func readWebsite(url string, html string) {
 	collector := colly.NewCollector()
 
 	var scrapData []string
-	collector.OnHTML(html, func(readerHtml *colly.HTMLElement) {
+	collector.OnHTML(".going.teams ", func(readerHtml *colly.HTMLElement) {
 
 		firstTeam := readerHtml.ChildText(".first-team > .team-name.large span")
 		secondTeam := readerHtml.ChildText(".second-team > .team-name.large span")
