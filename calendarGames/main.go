@@ -6,7 +6,7 @@ import (
 	"github.com/gocolly/colly"
 )
 
-func GamesResults(calendarGame *ResultGames) {
+func GamesResults(calendarGame *ResultGames, action string) {
 	url := "https://www.mediotiempo.com/futbol/liga-mx/calendario"
 
 	defer func() {
@@ -23,6 +23,25 @@ func GamesResults(calendarGame *ResultGames) {
 
 	collector := colly.NewCollector()
 
+	switch action {
+	case "getGames":
+		getResults(collector, calendarGame)
+	default:
+		calendarGame.listGames()
+	}
+
+	collector.Visit(url)
+
+}
+
+func VisitLigaMX() {
+	results := &ResultGames{}
+	GamesResults(results, "getGames")
+	GamesResults(results, "listGames")
+
+}
+
+func getResults(collector *colly.Collector, calendarGame *ResultGames) {
 	collector.OnHTML(".going.teams ", func(readerHtml *colly.HTMLElement) {
 
 		firstTeam := readerHtml.ChildText(".first-team > .team-name.large span")
@@ -39,11 +58,4 @@ func GamesResults(calendarGame *ResultGames) {
 		calendarGame.add(currentGame)
 
 	})
-
-	collector.Visit(url)
-
-}
-
-func ShowGames(calendarGame *ResultGames) {
-	calendarGame.listGames()
 }
