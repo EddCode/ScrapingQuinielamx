@@ -1,7 +1,9 @@
 package main
 
-import "ScrapingQuinielamx/handler"
+import "ScrapingQuinielamx/calendarGames"
 
 func main() {
-	handler.GamesResults()
+	results := &calendarGames.ResultGames{}
+	calendarGames.GamesResults(results)
+	calendarGames.ShowGames(results)
 }
