@@ -1,34 +1,25 @@
-package handler
+package calendarGames
 
 import (
 	"encoding/json"
 	"fmt"
-	"io"
 	"log"
-	"net/http"
 
 	"github.com/gocolly/colly"
 )
 
-func Root(w http.ResponseWriter, request *http.Request) {
-	gamesResults()
-	io.WriteString(w, "Web scrapint starting")
-}
-
-func gamesResults() {
+func GamesResults() {
 	url := "https://www.mediotiempo.com/futbol/liga-mx/calendario"
-	fmt.Print(url)
 
 	defer func() {
 		recov := recover()
-		log.Println(recov)
+		log.Printf("Error: %s \n", recov)
 	}()
 
 	if url == "" {
 		panic("Missing URL argument to starting scraping")
 	}
 
-	log.Println("Reading website => ", url)
 	collector := colly.NewCollector()
 
 	var scrapData []string
@@ -45,6 +36,8 @@ func gamesResults() {
 		}
 	})
 
+	// TODO: make struct with game data eg. {home team: lose, visit team: win, result, game status}
+	// save each struct at slice
 	collector.Visit(url)
 
 	_, err := json.Marshal(scrapData)
