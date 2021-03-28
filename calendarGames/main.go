@@ -1,6 +1,7 @@
 package calendarGames
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/gocolly/colly"
@@ -42,7 +43,8 @@ func VisitLigaMX() {
 }
 
 func getResults(collector *colly.Collector, calendarGame *ResultGames) {
-	collector.OnHTML(".going.teams ", func(readerHtml *colly.HTMLElement) {
+	collector.OnHTML(".ctr-stadistics-header__header", func(readerHtml *colly.HTMLElement) {
+        fmt.Print(readerHtml)
 
 		firstTeam := readerHtml.ChildText(".first-team > .team-name.large span")
 		secondTeam := readerHtml.ChildText(".second-team > .team-name.large span")

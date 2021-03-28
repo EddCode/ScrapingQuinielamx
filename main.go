@@ -1,6 +1,8 @@
 package main
 
-import "ScrapingQuinielamx/calendarGames"
+import (
+	"ScrapingQuinielamx/calendarGames"
+)
 
 func main() {
 	calendarGames.VisitLigaMX()
